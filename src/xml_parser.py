@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as XMLParser
 import requests
 
-# XML_URL = 'http://www.w3schools.com/xml/plant_catal.xml'
+XML_URL = 'https://raw.githubusercontent.com/DarraghMulhallDev/TucowsChallenge/trunk/xml/graph.xml?token=GHSAT0AAAAAACXWT2ZRLV6XDEE5QAJEDRE2ZXLZOEQ'
 GRAPH_FILE = 'xml/graph.xml'
 
 # read file from internet and write to local file
