@@ -17,14 +17,14 @@ def download_file(file_url):
         file.write(response.content)
 
 
-# check that any of the child tag exists in parent
+# check that the child tag exists in parent
 def validate_child_tag_exists(parent, child_tag):
-    if parent.findall(child_tag) is None:
+    if parent.find(child_tag) is None:
             raise ValueError("{0} tag must be present in {1} tag".format(child_tag, parent.tag))
 
 
 # validate child tag values inside tags of list are distinct
-def validate_child_tags_value(parent_list, tag):
+def validate_child_tags_distinct(parent_list, tag):
     values_set = set()
     for node in parent_list:
         child_tag = node.find(tag)
@@ -37,9 +37,9 @@ def validate_child_tags_value(parent_list, tag):
 
 # check if 1 child tag only exists in parent
 def validate_singular_child_tag(parent, child_tag):
-    child_tags = parent.findall('from')
-    if len(child_tags) > 1:
-        raise ValueError('Only 1 {} tag must exist in each node edge', child_tag)
+    child_tags = parent.findall(child_tag)
+    if len(child_tags) != 1:
+        raise ValueError('Only 1 <{}> tag must exist in each node edge'.format(child_tag))
 
 
 # validate and update any missing costs to default
@@ -54,36 +54,32 @@ def parse_cost_tag(edge_node):
 
 # main function to parse/validate the given xml file
 def parse_graph_xml(xml_file):
-    try:
-        # check if parse already returns an exception
-        xml_tree = XMLParser.parse(GRAPH_FILE)
-        graph_root = xml_tree.getroot()
+    # check if parse already returns an exception
+    xml_tree = XMLParser.parse(xml_file)
+    graph_root = xml_tree.getroot()
 
-        if graph_root.tag != 'graph':
-            raise ValueError("Xml root tag must be a graph")
-        
-        validate_child_tag_exists(graph_root, 'id')
-        validate_child_tag_exists(graph_root, 'name')
+    if graph_root.tag != 'graph':
+        raise ValueError("Xml root tag must be a graph")
+    
+    validate_child_tag_exists(graph_root, 'id')
+    validate_child_tag_exists(graph_root, 'name')
 
-        nodes_tag = graph_root.find('nodes')
-        nodes_list = nodes_tag.findall('node')
-        # validate that there's at least 1 node inside nodes tag
-        if len(nodes_list) == 0:
-            raise ValueError("No <node> tags were found inside the <nodes> group")
-        
-        # make sure all ids are distinct within nodes
-        validate_child_tags_value(nodes_list, 'id')
+    nodes_tag = graph_root.find('nodes')
+    nodes_list = nodes_tag.findall('node')
+    # validate that there's at least 1 node inside nodes tag
+    if len(nodes_list) == 0:
+        raise ValueError("No <node> tags were found inside the <nodes> group")
+    
+    # make sure all ids are distinct within nodes
+    validate_child_tags_distinct(nodes_list, 'id')
 
-        # validate node edges
-        edges_tag = graph_root.find('edges')
-        node_edges = edges_tag.findall('node')
-        for node in node_edges:
-            # validate 1 occurrence of tags are found in node
-            validate_singular_child_tag(node, 'from')
-            validate_singular_child_tag(node, 'to')
-            # validate and update any missing costs to default
-            parse_cost_tag(node)
-        return graph_root
-
-    except Exception as ex:
-        print(ex)
+    # validate node edges
+    edges_tag = graph_root.find('edges')
+    node_edges = edges_tag.findall('node')
+    for node in node_edges:
+        # validate 1 occurrence of tags are found in node
+        validate_singular_child_tag(node, 'from')
+        validate_singular_child_tag(node, 'to')
+        # validate and update any missing costs to default
+        parse_cost_tag(node)
+    return graph_root
