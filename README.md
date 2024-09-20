@@ -6,6 +6,7 @@
 - Windows: https://docs.docker.com/desktop/install/windows-install/
 
 **Deploy Postgres in Docker**
+
 Once Docker is installed do the following once inside the root of the repo
 ```
 cd database
