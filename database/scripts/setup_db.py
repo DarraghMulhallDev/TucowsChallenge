@@ -1,6 +1,13 @@
 import psycopg2
 import os
 
+def load_file(cur, file):
+    sql = ''
+    script_dir = os.path.dirname(__file__)
+    sql_file_path = os.path.join(script_dir, '../sql/{}'.format(file))
+    with open(sql_file_path, 'r') as file:
+        sql = file.read()
+    cur.execute(sql)
 
 def setup_db():
     print("connecting to database")
@@ -15,26 +22,14 @@ def setup_db():
     cur = conn.cursor()
 
     # run create tables script
-    sql = ''
-    script_dir = os.path.dirname(__file__)
-    sql_file_path = os.path.join(script_dir, '../sql/create_tables.sql')
-    with open(sql_file_path, 'r') as file:
-        sql = file.read()
-    cur.execute(sql)
+    load_file(cur, 'create_tables.sql')
     # run table insertion script to initialize data
-    sql_file_path = os.path.join(script_dir, '../sql/insert_data.sql')
-    sql = ''
-    with open(sql_file_path, 'r') as file:
-        sql = file.read()
-    cur.execute(sql)
+    load_file(cur, 'insert_data.sql')
     print("Database tables initialized")
 
-    # load find_cycles function
-    sql_file_path = os.path.join(script_dir, '../sql/find_cycles.sql')
-    sql = ''
-    with open(sql_file_path, 'r') as file:
-        sql = file.read()
-    cur.execute(sql)
+    # load find functions
+    load_file(cur, 'find_cycles.sql')
+    load_file(cur, 'find_paths.sql')
     cur.close()
 
 
@@ -55,19 +50,11 @@ def setup_test_db():
     except psycopg2.errors.DuplicateDatabase:
         print("Database 'test_database' already exists")
     # run create tables script
-    sql = ''
-    script_dir = os.path.dirname(__file__)
-    sql_file_path = os.path.join(script_dir, '../sql/create_tables.sql')
-    with open(sql_file_path, 'r') as file:
-        sql = file.read()
-    cur.execute(sql)
+    load_file(cur, 'create_tables.sql')
     print("Test database tables initialized")
-    # load find_cycles function
-    sql_file_path = os.path.join(script_dir, '../sql/find_cycles.sql')
-    sql = ''
-    with open(sql_file_path, 'r') as file:
-        sql = file.read()
-    cur.execute(sql)
+    # load find functions
+    load_file(cur, 'find_cycles.sql')
+    load_file(cur, 'find_paths.sql')
 
     cur.close()
 
