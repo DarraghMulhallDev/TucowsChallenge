@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user         # Replace with your desired username
+      POSTGRES_PASSWORD: password  # Replace with your desired password
+      POSTGRES_DB: database 
+    volumes:
+      - /var/lib/postgresql/data
+    ports:
+      - "5433:5432"
