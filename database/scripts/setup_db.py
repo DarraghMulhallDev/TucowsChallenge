@@ -30,6 +30,16 @@ def setup_db():
     cur.execute(sql)
     conn.commit()
     print("Database tables initialized")
+
+    # load find_cycles function
+    sql_file_path = os.path.join(script_dir, '../sql/find_cycles.sql')
+    sql = ''
+    with open(sql_file_path, 'r') as file:
+        sql = file.read()
+    cur.execute(sql)
+    conn.commit()
+
+
     cur.close()
 
 setup_db()
