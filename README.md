@@ -110,4 +110,11 @@ The recursive stack should end by finding a cycle or where the current node has 
    I added substantial tests to all of the core functionality requested here. I utilized adding a separate test database to allow manipulation of the graph data for different test cases
 
    In the case of the xml parsing, I added a bunch of different xml files to represent different invalid datasets to cover all test cases
+
+   To run the tests you will need to run the following:
+   ```
+ export PYTHONPATH=$(pwd)
+pytest tests
+```
+the export simplifies module calls in the tests
   
