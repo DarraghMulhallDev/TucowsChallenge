@@ -7,11 +7,12 @@ def xml_challenge():
     return parsed_xml
 
 
-def run_json_path_finder():
-    return json_paths.query_paths()
+def run_json_path_builder():
+    answers = json_paths.query_paths('{"queries": [{"paths": {"start": "a","end": "e" }},{"cheapest": {"start": "a","end": "e" }}, {"cheapest": {"start": "a","end": "h" }}]}')
+    json_paths.write_json(answers)
 
 
 parsed_xml = xml_challenge()
 
 
-print(run_json_path_finder())
+print(run_json_path_builder())
