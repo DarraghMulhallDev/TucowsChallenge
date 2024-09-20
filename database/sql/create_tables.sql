@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS graphs (
+    graph_id SERIAL PRIMARY KEY,
+    id VARCHAR(255) UNIQUE NOT NULL,
+    name VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS nodes (
+    id VARCHAR(255) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    graph_id INT NOT NULL REFERENCES graphs(graph_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS edges (
+    graph_id INT REFERENCES graphs(graph_id) ON DELETE CASCADE,
+    from_node_id VARCHAR(255) NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
+    to_node_id VARCHAR(255) NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
+    cost FLOAT DEFAULT 0.0,
+    PRIMARY KEY (from_node_id, to_node_id)
+);
