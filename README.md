@@ -89,10 +89,10 @@ The src/main.py is where most of the challenge-related code gets executed.
 ```
 The idea here is utilizing the recursive functionality that postgres possesses and using it to navigate through tree/graph-like structures.
 The main thought process is to recursively iterate through the graph connecting the current from node to where that same node exists as a "to".
-This allows us to navigate through the graph maintain an array of the nodes we have visited, if we find something that already exists in the array then we have a found a cycle path.
-The recursive stack should ended in each call by finding a cycle or where the current node has no linkages
+This allows us to navigate through the graph and maintain an array of the nodes we have visited, if we find something that already exists in the array then we have a found a cycle path.
+The recursive stack should end by finding a cycle or where the current node has no linkages
 
-5. I made a couple moe sql functions for finding the paths and cheapest path, both inspired by similar logic from the finding cycles function
+5. I made a couple more sql functions for finding the paths and cheapest path, both inspired by similar logic from the finding cycles function
    These are housed in database/sql/find_paths.sql.
    The first function find_paths is very similar to the find_cycles function, but just that it can take a start and end node and use the start node as the initial anchor and then the end node as a constraint for ending the recursive stack call
    The cheapest_function, utilizes a total_cost variable which is down the recursive stack call where we keep adding nodes to a accumulating path array and obtain the final cost per path once no more recursive calls can go deeper.
