@@ -1,17 +1,9 @@
 import os
-import psycopg2
+import database.db_connector as connector
 
 def find_cycles():
-    conn = psycopg2.connect(
-        dbname="database",
-        user="user",
-        password="password",
-        host="localhost",  # or your host
-        port="5433"        # default PostgreSQL port
-    )
-
+    conn = connector.get_db_connection()
     cur = conn.cursor()
-
     # run create tables script
     cur.execute('SELECT * FROM find_cycles(1);')
     conn.commit()
