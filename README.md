@@ -105,6 +105,8 @@ The recursive stack should end by finding a cycle or where the current node has 
   Simple IF logic is put in place to deal with paths vs cheapest and the different return types of [] vs false
   I chose to have the json_paths.query_paths be able to take a string of json optionally to allow for easy tests instead of always doing stdin. If no string is passed the function will look at stdin
 
+  The the output file gets stored at JSON_FILE = 'json/json_paths_result.json'
+
 **Testing**
 
    I added substantial tests to all of the core functionality requested here. I utilized adding a separate test database to allow manipulation of the graph data for different test cases
